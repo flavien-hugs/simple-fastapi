@@ -1,4 +1,3 @@
-from typing import Optional
 from sqlalchemy import Column, Boolean, String, Enum
 
 from .mixins import BaseModel

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from core.db.models.users import User
 from core.config.hashing import Hasher
 from core.db.models.constants import UserType
-from core.schemas.users.customers import UserCustomerCreate, UserCustomerUpdate, UserCustomerOut
+from core.schemas.users.customers import UserCustomerCreate, UserCustomerUpdate
 
 
 def create_customer_user(user: UserCustomerCreate, db: Session):

@@ -3,7 +3,6 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from core.db.models.users import User
-from core.config.hashing import Hasher
 from core.db.models.constants import Gender, UserType
 from core.schemas.users.cleaners import UserCleanerCreate, UserCleanerUpdate
 

@@ -1,11 +1,9 @@
-from typing import Optional, List
+from typing import Optional
 from datetime import date, datetime
 
-from sqlalchemy import Enum
 from pydantic import BaseModel, EmailStr
 
 from core.db.models.constants import UserType, Gender
-
 
 
 class UserBase(BaseModel):
