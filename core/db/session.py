@@ -1,11 +1,10 @@
 import os
-
 from typing import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from ..config.config import settings
+from core.config.config import settings
 
 """
 if you install postgres or any database
@@ -21,7 +20,9 @@ to use sqlite and comment above 2 lines of SQLALCHEMY_DATABASE_URL AND engine
 """
 
 SQLALCHEMY_DATABASE_URL = f"sqlite:///./{os.getenv('DATABASE_NAME', 'prod')}.sqlite3"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
