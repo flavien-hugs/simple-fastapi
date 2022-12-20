@@ -57,4 +57,4 @@ venv.bak/
 .env
 *.sqlite
 .isort.cfg
-dev.sqlite3
+*.sqlite3
