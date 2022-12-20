@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .db.base import Base
-from .db.session import engine
-from .api.base import api_router
-from .config.config import settings
+from core.api.base import api_router
+from core.config.config import settings
+from core.db.base import Base
+from core.db.session import engine
 
 
 def create_tables():
@@ -25,7 +25,6 @@ def start_application():
 
 app = start_application()
 
-"""
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8070"],
@@ -33,4 +32,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-"""
