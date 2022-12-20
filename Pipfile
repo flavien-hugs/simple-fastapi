@@ -25,6 +25,7 @@ pre-commit = "*"
 pytest = "*"
 httpx = "*"
 requests = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.10"
