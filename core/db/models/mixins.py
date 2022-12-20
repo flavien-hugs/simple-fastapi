@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from sqlalchemy import Column
-from sqlalchemy import Integer, DateTime
+from sqlalchemy import DateTime
+from sqlalchemy import Integer
 
 
 class BaseModel(object):
