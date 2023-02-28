@@ -9,11 +9,11 @@ venv: ## Make a new virtual environment
 	pipenv shell
 
 freeze: ## Pin current dependencies
-	pipenv requirements > core/requirements.txt
+	pipenv requirements > requirements.txt
 
 .PHONY: install
 install: ## Install or update dependencies
-	pip install -r core/requirements.txt
+	pip install -r requirements.txt
 
 .PHONY: runserver
 runserver: ## Run the server

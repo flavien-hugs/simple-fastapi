@@ -11,11 +11,11 @@ aiofiles = "*"
 python-dotenv = "*"
 pydantic = {extras = ["email"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
-python-jose = "*"
 python-multipart = "*"
 psycopg2-binary = "*"
 fastapi-mail = "*"
 sqlalchemy = "*"
+pyjwt = "*"
 
 [dev-packages]
 flake8 = "*"
