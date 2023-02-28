@@ -19,7 +19,7 @@ def create_customer(user: UserCustomerCreate, db: Session):
     return user
 
 
-def get_customers(db: Session, skip: int = 0, limit: int = 100):
+def get_customers(db: Session, skip: int = 0, limit: int = 50):
     users = (
         db.query(User)
         .filter(User.lbm_is_active, User.lbm_user_type == UserType.CUSTOMER)
@@ -40,19 +40,19 @@ def get_customer(id: int, db: Session):
     )
 
 
-def update_customer(id: int, user: UserCustomerUpdate, db: Session):
+def update_customer_by_id(id: int, user: UserCustomerUpdate, db: Session):
     existing_customer = db.query(User).filter(
         User.id == id, User.lbm_user_type == UserType.CUSTOMER
     )
     if not existing_customer.first():
         return 0
-    user.__dict__.update()
+    user.__dict__.update(id=id)
     existing_customer.update(user.__dict__)
     db.commit()
     return 1
 
 
-def delete_customer(id: int, db: Session):
+def delete_customer_by_id(id: int, db: Session):
     existing_customer = db.query(User).filter(
         User.id == id, User.lbm_user_type == UserType.CUSTOMER
     )
@@ -61,3 +61,8 @@ def delete_customer(id: int, db: Session):
     existing_customer.delete(synchronize_session=False)
     db.commit()
     return 1
+
+
+def get_customer_by_email(email: str, db: Session):
+    user = db.query(User).filter(User.lbm_addr_email == email).first()
+    return user

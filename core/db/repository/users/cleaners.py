@@ -53,8 +53,8 @@ def update_cleaner_by_id(id: int, user: UserCleanerUpdate, db: Session):
     return 1
 
 
-def delete_cleaner_by_id(cleaner_id: int, db: Session):
-    existing_user = db.query(User).filter(User.id == cleaner_id)
+def delete_cleaner_by_id(id: int, db: Session):
+    existing_user = db.query(User).filter(User.id == id)
     if not existing_user.first():
         return 0
     existing_user.delete(synchronize_session=False)
