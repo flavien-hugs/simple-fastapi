@@ -43,6 +43,7 @@ class UserCustomerCreate(UserCustomerBase):
 class UserCustomerOut(BaseModel):
     id: int
     lbm_username: str
+    lbm_addr_email: EmailStr
     lbm_nickname: Optional[str]
     lbm_district: Street
 
