@@ -5,14 +5,13 @@ from typing import Generator
 
 import pytest
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from fastapi.testclient import TestClient
 
+from core.api.base import api_router
 from core.db.base import Base
 from core.db.session import get_db
-from core.api.base import api_router
-from core.config.config import settings
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -53,7 +52,9 @@ def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
 
 
 @pytest.fixture(scope="module")
-def client(app: FastAPI, db_session: SessionTesting) -> Generator[TestClient, Any, None]:
+def client(
+    app: FastAPI, db_session: SessionTesting
+) -> Generator[TestClient, Any, None]:
     """
     Create a new FastAPI TestClient that uses the `db_session` fixture to override
     the `get_db` dependency that is injected into routes.
