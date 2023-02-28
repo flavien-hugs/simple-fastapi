@@ -3,12 +3,12 @@ from sqlalchemy import Column
 from sqlalchemy import Enum
 from sqlalchemy import String
 
-from ..base_class import Base
-from .constants import City
-from .constants import Gender
-from .constants import Street
-from .constants import UserType
-from .mixins import BaseModel
+from core.db.base_class import Base
+from core.db.models.constants import City
+from core.db.models.constants import Gender
+from core.db.models.constants import Street
+from core.db.models.constants import UserType
+from core.db.models.mixins import BaseModel
 
 
 class User(BaseModel, Base):
