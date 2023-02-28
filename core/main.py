@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.api.base import api_router
@@ -13,11 +15,14 @@ def create_tables():
 
 
 def include_routers(app):
-    app.include_router(api_router)
+    app.include_router(api_router, prefix="/api/v1")
 
 
 def start_application():
-    app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+    app = FastAPI(
+        title=settings.PROJECT_NAME,
+        version=settings.PROJECT_VERSION
+    )
     create_tables()
     include_routers(app)
     return app
@@ -25,10 +30,16 @@ def start_application():
 
 app = start_application()
 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8070"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+async def redirect_app():
+    return RedirectResponse('/docs')
