@@ -1,4 +1,4 @@
-# LaBonneDame API
+# Simple API with FastAPI
 
 ## Technology Stack:
 
