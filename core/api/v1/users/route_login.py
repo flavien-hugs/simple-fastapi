@@ -9,7 +9,6 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 import jwt
 from sqlalchemy.orm import Session
 
-from core.api.utils import OAuth2PasswordBearerWithCookie
 from core.config.config import settings
 
 from core.config.hashing import Hasher
@@ -19,7 +18,7 @@ from core.db.session import get_db
 
 route_login = APIRouter()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def authenticate_user(username: str, password: str, db: Session):
@@ -29,6 +28,35 @@ def authenticate_user(username: str, password: str, db: Session):
     if not Hasher.verify_password(password, user.lbm_password):
         return False
     return user
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid authentication credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM]
+        )
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except jwt.PyJWTError:
+        raise credentials_exception
+
+    user = get_user(username=username, db=db)
+    if user is None:
+        raise credentials_exception
+    return user
+
+
+def get_current_active_user(current_user: Session = Depends(get_current_user)):
+    if not current_user.lbm_is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
 
 
 @route_login.post("/token", summary="Login user")
@@ -51,29 +79,3 @@ def login_for_access_token(
         key="access_token", value=f"Bearer {access_token}", httponly=True
     )
     return {"access_token": access_token, "token_type": "bearer"}
-
-
-def get_current_user_from_token(
-    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
-):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-    )
-    try:
-        payload = jwt.decode(
-            token,
-            settings.SECRET_KEY,
-            algorithms=[settings.ALGORITHM]
-        )
-        username: str = payload.get("sub")
-        print("email is ", username)
-        if username is None:
-            raise credentials_exception
-    except jwt.PyJWTError:
-        raise credentials_exception
-
-    user = get_user(username=username, db=db)
-    if user is None:
-        raise credentials_exception
-    return user

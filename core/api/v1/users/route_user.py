@@ -13,7 +13,7 @@ from core.schemas.users.customers import UserCustomerOut
 from core.schemas.users.customers import UserCustomerUpdate
 
 from core.db.models.users import User
-from core.api.v1.users.route_login import get_current_user_from_token
+from core.api.v1.users.route_login import get_current_user
 
 route_users = APIRouter()
 
@@ -60,7 +60,7 @@ def get_all_customers(limit: int = 50, offset: int = 0, db: Session = Depends(ge
 def read_customer(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user_from_token),
+    current_user: User = Depends(get_current_user),
 ):
     id = current_user.id
     customer = customers.get_customer(id, db)
@@ -85,7 +85,7 @@ def update_customer(
     id: int,
     user: UserCustomerUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user_from_token),
+    current_user: User = Depends(get_current_user),
 ):
     current_user_id = current_user.id
     customer_retrieved = customers.update_customer(id, user, db)
@@ -115,7 +115,7 @@ def update_customer(
 def delete_customer(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user_from_token)
+    current_user: User = Depends(get_current_user)
 ):
 
     current_user_id = current_user.id
