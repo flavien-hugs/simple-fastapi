@@ -14,9 +14,6 @@ from core.db.session import get_db
 from core.schemas.users.cleaners import UserCleanerCreate
 from core.schemas.users.cleaners import UserCleanerOut
 
-from core.db.models.users import User
-from core.api.v1.users.route_login import get_current_user
-
 route_cleaners = APIRouter()
 
 
@@ -33,7 +30,7 @@ def get_all_cleaners(limit: int = 100, offset: int = 0, db: Session = Depends(ge
     summary="Get cleaner by district",
     response_model=List[UserCleanerOut],
 )
-def get_cleaner_by_district(
+def get_cleaner_district(
     district: str,
     db: Session = Depends(get_db),
 ):

@@ -1,16 +1,16 @@
 from datetime import timedelta
 
+import jwt
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import Response
 from fastapi import status
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-import jwt
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from core.config.config import settings
-
 from core.config.hashing import Hasher
 from core.config.security import create_access_token
 from core.db.repository.login import get_user
@@ -29,6 +29,7 @@ def authenticate_user(username: str, password: str, db: Session):
         return False
     return user
 
+
 def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -37,9 +38,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(
-            token,
-            settings.SECRET_KEY,
-            algorithms=[settings.ALGORITHM]
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         username: str = payload.get("sub")
         if username is None:
@@ -47,7 +46,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     except jwt.PyJWTError:
         raise credentials_exception
 
-    user = get_user(username=username, db=db)
+    user = get_user(username=username)
     if user is None:
         raise credentials_exception
     return user
